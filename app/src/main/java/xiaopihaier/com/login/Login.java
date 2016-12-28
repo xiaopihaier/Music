@@ -1,33 +1,25 @@
 package xiaopihaier.com.login;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.preference.Preference;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 public class Login extends AppCompatActivity implements View.OnClickListener{
     Button Login;
     TextView NewUser,forgetPassword,looking;
     EditText username,password;
     String name_db,password_db;
-    CheckBox RememberPassword;
+    CheckBox RememberPassword,AutomaticLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +39,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         looking= (TextView) findViewById(R.id.looking);
         looking.setOnClickListener(this);
         RememberPassword= (CheckBox) findViewById(R.id.RememberPassword);
+        AutomaticLogin= (CheckBox) findViewById(R.id.AutomaticLogin);
     }
 
     @Override
