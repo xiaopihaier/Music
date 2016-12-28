@@ -9,26 +9,33 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class Main extends AppCompatActivity implements View.OnClickListener{
 
     LinearLayout one,two,three,four;
     ViewPager viewPager;
+    View view_1,view_2,view_3,view_4;
+    ArrayList<View> arrayList;
+
+    //创建适配器
     PagerAdapter pagerAdapter=new PagerAdapter() {
+        //获取viewpager的页数
         @Override
         public int getCount() {
-            return 0;
+            return 4;
         }
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
-            return false;
+            return view==object;
         }
-
+        //销毁
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             super.destroyItem(container, position, object);
         }
-
+        //创建
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             return super.instantiateItem(container, position);
@@ -41,6 +48,18 @@ public class Main extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         IntentView();
+        //将布局文件加载成view视图
+        view_1=getLayoutInflater().inflate(R.layout.bttom_table1,null);
+        view_2=getLayoutInflater().inflate(R.layout.bttom_lable2,null);
+        view_3=getLayoutInflater().inflate(R.layout.bttom_lable3,null);
+        view_4=getLayoutInflater().inflate(R.layout.bttom_lable4,null);
+
+        arrayList=new ArrayList();
+        arrayList.add(view_1);
+        arrayList.add(view_2);
+        arrayList.add(view_3);
+        arrayList.add(view_4);
+
         viewPager.setAdapter(pagerAdapter);
     }
 
