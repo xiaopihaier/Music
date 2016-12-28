@@ -23,7 +23,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener{
         //获取viewpager的页数
         @Override
         public int getCount() {
-            return 4;
+            return arrayList.size();
         }
 
         @Override
@@ -33,12 +33,13 @@ public class Main extends AppCompatActivity implements View.OnClickListener{
         //销毁
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            super.destroyItem(container, position, object);
+            container.removeView(arrayList.get(position));
         }
         //创建
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            return super.instantiateItem(container, position);
+            container.addView(arrayList.get(position));
+            return arrayList.get(position);
         }
 
     };
