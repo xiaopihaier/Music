@@ -3,11 +3,10 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/bttom4"
+    <ListView
+        android:id="@+id/list"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="52dp"
-        android:text="4"/>
+        android:textSize="52dp"/>
 </LinearLayout>
