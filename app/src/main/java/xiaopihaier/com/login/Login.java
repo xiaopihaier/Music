@@ -23,17 +23,51 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     CheckBox RememberPassword, AutomaticLogin;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    MySQLHelper dbhelper;
+    SQLiteDatabase db;
+    Cursor cursor;
+    String name_Au, password_Au, name_Re, password_Re;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         IntentView();
+        RememberPassword();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isRemember = preferences.getBoolean("UserInfo", false);
         if (isRemember) {
+            RememberPassword();
+            username.setText(name_Re);
+            password.setText(password_Re);
             RememberPassword.setChecked(true);
         }
+    }
+
+    private void RememberPassword() {
+        dbhelper = new MySQLHelper(this, "UserInfo.db", null, 1);
+        db = dbhelper.getReadableDatabase();
+        cursor = db.query("user", null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                name_Re = cursor.getString(cursor.getColumnIndex("username"));
+                password_Re = cursor.getString(cursor.getColumnIndex("password"));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+    }
+
+    private void AutomaticLogin() {
+        dbhelper = new MySQLHelper(this, "UserInfo.db", null, 1);
+        db = dbhelper.getReadableDatabase();
+        cursor = db.query("user", null, null, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                name_Au = cursor.getString(cursor.getColumnIndex("name"));
+                password_Au = cursor.getString(cursor.getColumnIndex("password"));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
     }
 
     private void IntentView() {
@@ -56,9 +90,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.login:
                 editor = preferences.edit();
-                MySQLHelper dbhelper = new MySQLHelper(this, "UserInfo.db", null, 1);
-                SQLiteDatabase db = dbhelper.getReadableDatabase();
-                Cursor cursor = db.query("user", null, null, null, null, null, null);
+                dbhelper = new MySQLHelper(this, "UserInfo.db", null, 1);
+                db = dbhelper.getReadableDatabase();
+                cursor = db.query("user", null, null, null, null, null, null);
                 if (cursor.moveToFirst()) {
                     do {
                         name_db = cursor.getString(cursor.getColumnIndex("username"));
@@ -67,14 +101,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 }
                 String Username = username.getText().toString().trim();
                 String Password = password.getText().toString().trim();
+
+                //记住密码
+                if (RememberPassword.isChecked()) {
+                    editor.putBoolean("UserInfo", true);
+                } else {
+                    editor.clear();
+                }
+                editor.commit();
+
                 if (!TextUtils.isEmpty(Username) && !TextUtils.isEmpty(Password)) {
                     if (Username.equals(name_db) && Password.equals(password_db)) {
-                        if (RememberPassword.isChecked()) {
-                            editor.putBoolean("UserInfo", true);
-                        } else {
-                            editor.clear();
-                        }
-                        editor.commit();
                         Intent login = new Intent(Login.this, Main.class);
                         startActivity(login);
                     } else {
