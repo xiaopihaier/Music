@@ -25,6 +25,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         IntentView();
+
     }
 
     private void IntentView() {
