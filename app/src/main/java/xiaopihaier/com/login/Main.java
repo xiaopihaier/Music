@@ -1,22 +1,13 @@
 package xiaopihaier.com.login;
 
-import android.app.TabActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.widget.TabHost;
+import android.support.v7.app.AppCompatActivity;
 
-public class Main extends TabActivity {
-
-    TabHost tabHost;
+public class Main extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-        tabHost=getTabHost();
-        LayoutInflater.from(this).inflate(R.layout.activity_main,tabHost.getTabContentView(),true);
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("首页"));
+        setContentView(R.layout.activity_main);
     }
-
-
 }

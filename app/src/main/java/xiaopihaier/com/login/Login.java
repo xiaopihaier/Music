@@ -102,16 +102,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 String Username = username.getText().toString().trim();
                 String Password = password.getText().toString().trim();
 
-                //记住密码
-                if (RememberPassword.isChecked()) {
-                    editor.putBoolean("UserInfo", true);
-                } else {
-                    editor.clear();
-                }
-                editor.commit();
+
 
                 if (!TextUtils.isEmpty(Username) && !TextUtils.isEmpty(Password)) {
                     if (Username.equals(name_db) && Password.equals(password_db)) {
+                        //记住密码
+                        if (RememberPassword.isChecked()) {
+                            editor.putBoolean("UserInfo", true);
+                        } else {
+                            editor.clear();
+                        }
+                        editor.commit();
+
                         Intent login = new Intent(Login.this, Main.class);
                         startActivity(login);
                     } else {
