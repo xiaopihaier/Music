@@ -12,10 +12,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class NewUser extends AppCompatActivity implements View.OnClickListener{
     Button registered;
     EditText Username,First_Password,Second_Password;
-    String name_db;
+    String name_db,pass_md5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +62,18 @@ public class NewUser extends AppCompatActivity implements View.OnClickListener{
                         Toast.makeText(this, "此用户名已被使用!", Toast.LENGTH_SHORT).show();
                     } else {
                         if (first_password.equals(second_password)) {
+                            //MD5加密
+                            try {
+                                MessageDigest md = MessageDigest.getInstance("MD5");
+                                md.update(second_password.getBytes(), 0, second_password.length());
+                                pass_md5 = new BigInteger(1, md.digest()).toString(16);
+                                Toast.makeText(this, pass_md5, Toast.LENGTH_SHORT).show();
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            }
+
                             values.put("username", username);
-                            values.put("password", second_password);
+                            values.put("password", pass_md5);
                             db.insert("user", null, values);
                             Intent Login = new Intent(NewUser.this, Login.class);
                             startActivity(Login);

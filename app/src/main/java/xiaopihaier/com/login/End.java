@@ -12,9 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class End extends AppCompatActivity implements View.OnClickListener{
     EditText Change_Password,Confirm_Password;
     Button End;
+    String pass_md5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +51,17 @@ public class End extends AppCompatActivity implements View.OnClickListener{
                         Toast.makeText(this,"密码有误！请确认",Toast.LENGTH_SHORT).show();
                     } else {
 
-                        values.put("password", confirm_password);
+                        //MD5加密
+                        try {
+                            MessageDigest md = MessageDigest.getInstance("MD5");
+                            md.update(confirm_password.getBytes(), 0, confirm_password.length());
+                            pass_md5 = new BigInteger(1, md.digest()).toString(16);
+                            Toast.makeText(this, pass_md5, Toast.LENGTH_SHORT).show();
+                        } catch (NoSuchAlgorithmException e) {
+                            e.printStackTrace();
+                        }
+
+                        values.put("password", pass_md5);
                         db.update("user", values, "username=" + username_intent, new String[]{});
                         Intent Login = new Intent(this, xiaopihaier.com.login.Login.class);
                         startActivity(Login);

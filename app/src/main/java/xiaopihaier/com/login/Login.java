@@ -15,6 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class Login extends AppCompatActivity implements View.OnClickListener {
     Button Login;
     TextView NewUser, forgetPassword, looking;
@@ -26,7 +30,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     MySQLHelper dbhelper;
     SQLiteDatabase db;
     Cursor cursor;
-    String name_Au, password_Au, name_Re, password_Re;
+    String name_Au, password_Au, name_Re, password_Re, pass_md5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +106,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 String Username = username.getText().toString().trim();
                 String Password = password.getText().toString().trim();
 
-
+                //MD5加密
+                try {
+                    MessageDigest md = MessageDigest.getInstance("MD5");
+                    md.update(Password.getBytes(), 0, Password.length());
+                    pass_md5 = new BigInteger(1, md.digest()).toString(16);
+                    Toast.makeText(this, pass_md5, Toast.LENGTH_SHORT).show();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
 
                 if (!TextUtils.isEmpty(Username) && !TextUtils.isEmpty(Password)) {
-                    if (Username.equals(name_db) && Password.equals(password_db)) {
+                    if (pass_md5.equals(name_db) && Password.equals(password_db)) {
                         //记住密码
                         if (RememberPassword.isChecked()) {
                             editor.putBoolean("UserInfo", true);
