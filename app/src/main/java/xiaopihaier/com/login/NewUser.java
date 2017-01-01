@@ -67,7 +67,6 @@ public class NewUser extends AppCompatActivity implements View.OnClickListener{
                                 MessageDigest md = MessageDigest.getInstance("MD5");
                                 md.update(second_password.getBytes(), 0, second_password.length());
                                 pass_md5 = new BigInteger(1, md.digest()).toString(16);
-                                Toast.makeText(this, pass_md5, Toast.LENGTH_SHORT).show();
                             } catch (NoSuchAlgorithmException e) {
                                 e.printStackTrace();
                             }
